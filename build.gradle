@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'pmd' // Add the PMD plugin
+
+
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+compileJava {
+    sourceCompatibility = 11
+    targetCompatibility = 11
+}
+
+jar {
+    manifest {
+        //attributes 'Main-Class': 'ui.TextUI'
+        attributes 'Main-Class': 'ui.MancalaGUI'
+    }
+    //archiveBaseName = 'TextUI'
+    archiveBaseName = 'mancalaGame'
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+pmd {
+    toolVersion = "6.55.0"
+    ignoreFailures = true
+    ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml", "category/java/design.xml", "category/java/codestyle.xml"]
+    pmdMain {
+        excludes = [
+                '**/TextUI.java',
+                '**/test/**' 
+        ]
+    }
+}
+
+task echo;
+
+echo.doFirst {
+    println "To run the program from jar:\njava -jar build/libs/mancalaGame.jar"
+    println "To run the program from class files:\njava -cp build/classes/java/main ui.TextUI"
+}
+
+test {
+    useJUnitPlatform()
+}
